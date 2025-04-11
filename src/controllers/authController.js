@@ -17,7 +17,7 @@ const register = async (req, res) => {
       return res.status(400).json({ error: "Email không hợp lệ!" });
     }
 
-    const roleIdNum = RoleId ? Number(RoleId) : 2; // Mặc định RoleId = 2 nếu không có
+    const roleIdNum = RoleId ? Number(RoleId) : 2; 
     if (isNaN(roleIdNum)) {
       return res.status(400).json({ error: "RoleId phải là số!" });
     }
@@ -55,7 +55,7 @@ const register = async (req, res) => {
     const token = jwt.sign(
         { UserId: UserId, RoleId: roleIdNum, Email: Email },  
         process.env.JWT_SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "72h" }
     );
     res.status(201).json({ message: "Đăng ký thành công!", token: token }); 
   } catch (error) {
@@ -72,7 +72,6 @@ const login = async (req, res) => {
       return res.status(400).json({ error: "Vui lòng nhập email và mật khẩu!" });
     }
 
-    // Truy vấn người dùng từ cơ sở dữ liệu
     const userSql = "SELECT * FROM users WHERE Email = ?";
     const userResult = await db.query(userSql, {
       replacements: [Email],

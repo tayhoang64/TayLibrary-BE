@@ -43,7 +43,32 @@ class UserService {
                 reject({ code: 500, error: "Internal Server Error", details: error.message });
             }
         });
-    }    
+    }   
+    
+    getAllUsers = (search) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const whereClause = search
+              ? {
+                  [Op.or]: [
+                    { Username: { [Op.like]: `%${search}%` } },
+                    { Email: { [Op.like]: `%${search}%` } }
+                  ]
+                }
+              : {};
+      
+            const users = await User.findAll({
+              where: whereClause,
+              attributes: ["UserId", "Username", "Email", "CardNumber"],
+              order: [["UserId", "ASC"]],
+            });
+      
+            resolve(users);
+          } catch (error) {
+            reject({ code: 500, error: "Lỗi server", details: error.message });
+          }
+        });
+      };
 
 }
 

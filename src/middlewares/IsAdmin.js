@@ -54,7 +54,7 @@ const IsAdmin = async (req, res, next) => {
             return res.status(401).json({ error: 'Unauthorized: Invalid token payload' });
         }
 
-        const UserId = decoded.UserId;  // Extract UserId from decoded token
+        const UserId = decoded.UserId;  
 
         const user = await User.findByPk(UserId, {
             include: {
@@ -64,23 +64,23 @@ const IsAdmin = async (req, res, next) => {
         });
 
         if (!user) {
-            return res.status(404).json({ error: 'User not found' });  // Explicitly handle user not found
+            return res.status(404).json({ error: 'User not found' });  
         }
 
         if (!user.Role || user.Role.RoleName.toUpperCase().indexOf("ADMIN") === -1) {
             return res.status(403).json({ error: 'Forbidden: Insufficient privileges' });
         }
 
-        req.user = user; // Attach the user object to the request
+        req.user = user; 
         next();
     } catch (error) {
-        console.error("Error verifying token:", error); // Log the error for debugging
+        console.error("Error verifying token:", error); 
         if (error instanceof jwt.TokenExpiredError) {
             return res.status(401).json({ error: 'Unauthorized: Token expired' });
         } else if (error instanceof jwt.JsonWebTokenError) {
             return res.status(401).json({ error: 'Unauthorized: Invalid token signature' });
         } else {
-            return res.status(401).json({ error: 'Unauthorized: Invalid token' }); // Generic error for other JWT errors
+            return res.status(401).json({ error: 'Unauthorized: Invalid token' }); 
         }
     }
 };
@@ -99,7 +99,7 @@ const IsUser = async (req, res, next) => {
         return res.status(401).json({ error: 'Unauthorized: Invalid token payload' });
       }
   
-      const UserId = decoded.UserId; // Extract UserId from decoded token
+      const UserId = decoded.UserId; 
   
       const user = await User.findByPk(UserId, {
         include: {
