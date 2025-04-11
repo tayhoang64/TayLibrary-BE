@@ -15,7 +15,7 @@ class BookController{
             if (err) {
                 return res.status(400).json({ error: err.message });
             }
-            if (!req.files || !req.files[''] || !req.files['file']) {
+            if (!req.files || !req.files['image'] || !req.files['file']) {
                 return res.status(400).json({ error: 'Cần tải lên cả file ảnh và file PDF.' });
             }
             let {title, author, publisher, year, status, price, stock, categoryIds} = req.body;
